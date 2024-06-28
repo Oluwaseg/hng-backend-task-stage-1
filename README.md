@@ -58,7 +58,3 @@ This project sets up an Express.js server that fetches geolocation data based on
 
 - Customize `geoApiKey` with your own API key from IPGeolocation.io.
 - Adjust the greeting message and handling as per your application's requirements.
-
-```
-
-```
