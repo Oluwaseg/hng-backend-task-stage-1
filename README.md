@@ -1,7 +1,9 @@
+Certainly! Here's the updated README with the additional information about the OpenWeatherMap API:
+
 ````markdown
 # Express IPGeolocation API Server
 
-This project sets up an Express.js server that fetches geolocation data based on a client's IP address using the IPGeolocation API. It provides a simple endpoint `/api/hello` to greet visitors with their IP, city location, and a customizable greeting message.
+This project sets up an Express.js server that fetches geolocation data based on a client's IP address using the IPGeolocation API and weather data using the OpenWeatherMap API. It provides a simple endpoint `/api/hello` to greet visitors with their IP, city location, temperature, and a customizable greeting message.
 
 ## Installation
 
@@ -24,6 +26,7 @@ This project sets up an Express.js server that fetches geolocation data based on
 4. Set up environment variables:
    - `PORT`: Port number for the server to listen on.
    - `geoApiKey`: Your API key from IPGeolocation.io.
+   - `weatherApiKey`: Your API key from OpenWeatherMap.
 
 ## Usage
 
@@ -53,8 +56,9 @@ This project sets up an Express.js server that fetches geolocation data based on
 ## Error Handling
 
 - If the geolocation API request fails, the server responds with default values (IP, "Unknown" for location, and a generic greeting).
+- If the weather API request fails, the server responds with "Unknown" for temperature.
 
 ## Notes
 
-- Customize `geoApiKey` with your own API key from IPGeolocation.io.
+- Customize `geoApiKey` and `weatherApiKey` with your own API keys from IPGeolocation.io and OpenWeatherMap, respectively.
 - Adjust the greeting message and handling as per your application's requirements.
