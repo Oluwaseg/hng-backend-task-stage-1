@@ -1,4 +1,4 @@
-require("dotenv").config(); // Load dotenv configuration
+require("dotenv").config();
 
 const express = require("express");
 const requestIp = require("request-ip");
@@ -6,13 +6,10 @@ const axios = require("axios");
 
 const app = express();
 const port = process.env.PORT || 3000;
-const geoApiKey = process.env.geoApiKey;
-const weatherApiKey = process.env.weatherApiKey;
+const geoApiKey = process.env.geoApiKey; // ipgeolocation.io API key
 
-// Middleware to get client's IP address
 app.use(requestIp.mw());
 
-// Route to handle GET requests to root /
 app.get("/", (req, res) => {
   res.send(`
     <!DOCTYPE html>
@@ -20,7 +17,7 @@ app.get("/", (req, res) => {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>IPGeolocation API</title>
+        <title>Geolocation API</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -53,7 +50,7 @@ app.get("/", (req, res) => {
         </style>
     </head>
     <body>
-        <h1>Welcome to the IPGeolocation API</h1>
+        <h1>Welcome to the Geolocation API</h1>
         <p>Use the following links to get started:</p>
         <p><a href="/api/hello">/api/hello</a> - Get a greeting with your IP and location</p>
         <p><a href="/api/hello?visitor_name=yourname">/api/hello?visitor_name=yourname</a> - Personalize the greeting</p>
@@ -62,35 +59,28 @@ app.get("/", (req, res) => {
   `);
 });
 
-// Route to handle GET requests to /api/hello
 app.get("/api/hello", async (req, res) => {
-  const visitorName = req.query.visitor_name || "Guest"; // Get visitor name from query parameter or default to "Guest"
-  const clientIp = req.clientIp; // Get client's IP address from middleware
+  const visitorName = req.query.visitor_name || "Guest";
+  let clientIp = req.clientIp;
+
+  if (clientIp === "::1" || clientIp === "127.0.0.1") {
+    clientIp = "8.8.8.8"; // Google's public DNS IP address for testing
+  }
 
   try {
-    // Fetch geolocation data based on client's IP address using IPGeolocation API
-    const geoResponse = await axios.get(
-      `https://api.ipgeolocation.io/ipgeo?apiKey=${geoApiKey}&ip=${clientIp}`
+    const response = await axios.get(
+      `https://api.ipgeolocation.io/ipgeo?apiKey=${geoApiKey}&ip=${clientIp}&include=weather`
     );
-    const location = geoResponse.data.city || "Unknown"; // Extract city from geolocation response or default to "Unknown"
 
-    let temperature = "Unknown";
-    if (location !== "Unknown") {
-      // Fetch weather data based on the location using OpenWeatherMap API
-      const weatherResponse = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${weatherApiKey}`
-      );
-      temperature = weatherResponse.data.main.temp; // Extract temperature from weather response
-    }
+    const location = response.data.city || "Unknown";
+    const temperature = response.data.weather.temperature || "Unknown";
 
-    // Respond with JSON containing client's IP, location, temperature, and a greeting message
     res.json({
       client_ip: clientIp,
       location: location,
       greeting: `Hello, ${visitorName}! The temperature is ${temperature} degrees Celsius in ${location}.`,
     });
   } catch (error) {
-    // If there's an error fetching geolocation or weather data, respond with default values
     res.json({
       client_ip: clientIp,
       location: "Unknown",
@@ -99,7 +89,6 @@ app.get("/api/hello", async (req, res) => {
   }
 });
 
-// Start the server and listen on the specified port
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
