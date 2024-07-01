@@ -1,20 +1,20 @@
 ````markdown
-# Geolocation API
+# Weather API Integration
 
-This project sets up a basic web server using Express.js, which provides an API endpoint to get the client's IP address, location, and current temperature based on their IP address. It uses the ipgeolocation.io API to fetch this information.
+This project sets up a basic web server using Express.js to fetch and display current weather information based on the client's IP address. It utilizes the WeatherAPI service to retrieve weather data.
 
 ## Prerequisites
 
 - Node.js and npm installed on your machine
-- An API key from [ipgeolocation.io](https://ipgeolocation.io/)
+- An API key from [WeatherAPI](https://www.weatherapi.com/)
 
 ## Installation
 
 1. Clone this repository to your local machine:
 
    ```bash
-   git clone https://github.com/yourusername/geolocation-api.git
-   cd geolocation-api
+   git clone https://github.com/yourusername/weather-api.git
+   cd weather-api
    ```
 ````
 
@@ -24,10 +24,10 @@ This project sets up a basic web server using Express.js, which provides an API 
    npm install
    ```
 
-3. Create a `.env` file in the root directory and add your ipgeolocation.io API key:
+3. Create a `.env` file in the root directory and add your WeatherAPI API key:
 
    ```env
-   geoApiKey=YOUR_IPGEOLOCATION_API_KEY
+   weatherApiKey=YOUR_WEATHERAPI_API_KEY
    ```
 
 ## Usage
@@ -65,15 +65,14 @@ This project sets up a basic web server using Express.js, which provides an API 
 ## Code Explanation
 
 - The server uses `express` to handle HTTP requests.
-- The `request-ip` middleware is used to get the client's IP address.
-- The `axios` library is used to make HTTP requests to the ipgeolocation.io API.
+- The `axios` library is used to make HTTP requests to the WeatherAPI.
 - The root route (`/`) serves a simple HTML page with links to the API endpoint.
-- The `/api/hello` route handles GET requests, fetches the geolocation and weather data based on the client's IP address, and responds with a JSON object containing the IP address, location, temperature, and a greeting message.
+- The `/api/hello` route handles GET requests, fetches the weather data based on the client's IP address, and responds with a JSON object containing the IP address, location, temperature, and a greeting message.
 
 ## Important Notes
 
 - If the server is accessed locally (e.g., `localhost`), the client's IP address will be `::1` or `127.0.0.1`. In such cases, the server uses Google's public DNS IP address `8.8.8.8` for demonstration purposes.
-- The geolocation and weather data accuracy depends on the ipgeolocation.io API.
+- The weather data accuracy depends on the WeatherAPI service.
 
 ## License
 
@@ -81,5 +80,5 @@ This project is licensed under the MIT License.
 
 ```
 
-Replace `"YOUR_IPGEOLOCATION_API_KEY"` with your actual API key from ipgeolocation.io. This README file provides clear instructions for setting up and using the server, including details about the API endpoint and how it works.
+Replace `"YOUR_WEATHERAPI_API_KEY"` with your actual API key from WeatherAPI. This README file now focuses solely on setting up and using your Weather API integration project, providing clear instructions and details about the API endpoint and how it functions.
 ```
